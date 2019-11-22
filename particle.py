@@ -7,11 +7,21 @@ G = 1
 
 class Particle:
 
-    def __init__(self, mass, position):
+    def __init__(self, mass, position, momentum=0.):
         self.mass = mass
         self.position = position
         self.radius = Geometry.radius_from_mass(mass)
-        self.momentum = 0
+        self.momentum = momentum
+
+    def __add__(self, other):
+        mass = self.mass + other.mass
+        position = self.centre_of_mass(self, other)
+        momentum = self.momentum + other.momentum
+        return Particle(mass, position, momentum)
+
+    def centre_of_mass(self, other):
+        return (self.mass * self.position + other.mass * other.position) \
+                / (self.mass + other.mass)
 
     def two_body_force(self, other):
         dist_x = (other.position.x - self.position.x)
