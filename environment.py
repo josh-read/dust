@@ -39,7 +39,7 @@ class Environment:
 
 
 if __name__ == '__main__':
-    e = Environment(3, 0)
+    e = Environment(2, 0)
     g = Graphics()
     for i in range(20):
         e.move()
