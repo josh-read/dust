@@ -16,7 +16,7 @@ class Graphics:
         pygame.display.quit()
         pygame.quit()
     def drawParticle(self, p: Particle):
-        pygame.draw.circle(self.d, self.white, (p.position.x, p.position.y) , math.floor(p.radius), 3)
+        pygame.draw.circle(self.d, self.white, (p.position.x, p.position.y) , math.floor(p.radius * 50), 3)
         pygame.display.update()
     def update(self, ls: list):
         for p in ls:
