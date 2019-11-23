@@ -1,6 +1,6 @@
 class Vector:
 
-    def __init__(self, x, y):
+    def __init__(self, x: float, y: float):
 
         if type(x) == int or type(x) == float:
             self.x = x
