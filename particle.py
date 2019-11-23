@@ -1,17 +1,19 @@
-from geometry import Geometry
-from vector import Vector
 from random import random
+
+from vector import Vector
+import geometry as geo
 
 G = 1
 
 
 class Particle:
 
-    def __init__(self, mass, position, momentum=0.):
+    def __init__(self, mass, position, momentum=Vector(0, 0)):
         self.mass = mass
         self.position = position
-        self.radius = Geometry.radius_from_mass(mass)
+        self.radius = geo.radius_from_mass(mass)
         self.momentum = momentum
+        self.velocity = momentum / mass
 
     def __add__(self, other):
         mass = self.mass + other.mass
@@ -28,12 +30,12 @@ class Particle:
         dist_y = (other.position.y - self.position.y)
 
         try:
-            F_x = G * self.mass * other.mass / dist_x**2
+            F_x = G * self.mass * other.mass / pow(dist_x, 2)
         except ZeroDivisionError:
             F_x = 0
 
         try:
-            F_y = G * self.mass * other.mass / dist_y**2
+            F_y = G * self.mass * other.mass / pow(dist_y, 2)
         except ZeroDivisionError:
             F_y = 0
 
@@ -44,6 +46,11 @@ class Particle:
         for particle in dust:
             f_net += self.two_body_force(particle)
         return f_net
+
+    def update_particle(self, dust: list, dt: float):
+        self.momentum += dt * self.net_force(dust)
+        self.velocity = self.momentum / self.mass
+        self.position += dt * self.velocity
 
     @classmethod
     def random(cls):
