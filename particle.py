@@ -1,6 +1,7 @@
-from geometry import Geometry
+import geometry as Geo
 from vector import Vector
-from random import random
+#incorrect
+import random
 
 G = 1
 
@@ -10,7 +11,7 @@ class Particle:
     def __init__(self, mass, position, momentum=0.):
         self.mass = mass
         self.position = position
-        self.radius = Geometry.radius_from_mass(mass)
+        self.radius = Geo.radius_from_mass(mass)
         self.momentum = momentum
 
     def __add__(self, other):
@@ -47,6 +48,6 @@ class Particle:
 
     @classmethod
     def random(cls):
-        mass = random(0, 10)
-        position = (random(-5, 5), random(-5, 5))
+        mass = random.randint(1, 10)
+        position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position)
