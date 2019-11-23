@@ -1,4 +1,4 @@
-from random import random
+import random
 
 from vector import Vector
 import geometry as geo
@@ -54,6 +54,6 @@ class Particle:
 
     @classmethod
     def random(cls):
-        mass = random(0, 10)
-        position = (random(-5, 5), random(-5, 5))
+        mass = random.randint(1, 10)
+        position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position)
