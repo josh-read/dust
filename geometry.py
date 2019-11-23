@@ -6,10 +6,8 @@ DENSITY = 10
 
 
 def scalar_dist(p1: Vector, p2: Vector) -> float:
-    x1, y1 = p1
-    x2, y2 = p2
-    dx = x2 - x1
-    dy = y2 - y1
+    dx = p2.x - p1.x
+    dy = p2.y - p1.y
     return sqrt(pow(dx, 2) + pow(dy, 2))
 
 
