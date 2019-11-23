@@ -1,8 +1,16 @@
 class Vector:
 
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+
+        if type(x) == int or type(x) == float:
+            self.x = x
+        else:
+            raise TypeError("x must be either a float or integer")
+
+        if type(y) == int or type(y) == float:
+            self.y = y
+        else:
+            raise TypeError("x must be either a float or integer")
 
     def __repr__(self):
         return f"Vector({self.x:.2f}, {self.y:.2f})"
@@ -19,6 +27,8 @@ class Vector:
         else:
             raise TypeError("Unsupported operand type(s) for *: 'Vector' and "
                             + type(other).__name__)
+
+    __rmul__ = __mul__
 
     def __truediv__(self, other):
         """Division is only defined as a scalar division."""
