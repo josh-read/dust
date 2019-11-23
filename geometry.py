@@ -11,7 +11,7 @@ def scalar_dist(p1: Vector, p2: Vector) -> float:
     return sqrt(pow(dx, 2) + pow(dy, 2))
 
 
-def collision(r1: float, p1: Vector, r2: float, p2: Vector) -> bool:
+def check_collision(r1: float, p1: Vector, r2: float, p2: Vector) -> bool:
     critical_distance = r1 + r2
     if scalar_dist(p1, p2) <= critical_distance:
         return True
