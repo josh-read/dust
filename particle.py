@@ -51,7 +51,7 @@ class Particle:
             f_net += self.two_body_force(particle)
         return f_net
 
-    def update_particle(self, dust: list, dt: float):
+    def update(self, dust: list, dt: float):
         self.momentum += dt * self.net_force(dust)
         self.velocity = self.momentum / self.mass
         self.position += dt * self.velocity
