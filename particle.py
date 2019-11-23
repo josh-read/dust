@@ -21,6 +21,10 @@ class Particle:
         momentum = self.momentum + other.momentum
         return Particle(mass, position, momentum)
 
+    def __mod__(self, other) -> bool:
+        return geo.check_collision(self.radius, self.position,
+                                   other.radius, other.position)
+
     def centre_of_mass(self, other):
         return (self.mass * self.position + other.mass * other.position) \
                 / (self.mass + other.mass)
