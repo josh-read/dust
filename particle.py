@@ -34,12 +34,19 @@ class Particle:
         dist_y = (other.position.y - self.position.y)
 
         try:
-            F_x = G * self.mass * other.mass / pow(dist_x, 2)
+            if dist_x >= 0:
+                F_x = G * self.mass * other.mass / pow(dist_x, 2)
+            else:
+                F_x = G * self.mass * other.mass / -pow(dist_x, 2)
         except ZeroDivisionError:
             F_x = 0
 
         try:
-            F_y = G * self.mass * other.mass / pow(dist_y, 2)
+            if dist_y >= 0:
+                F_y = G * self.mass * other.mass / pow(dist_y, 2)
+            else:
+                F_y = G * self.mass * other.mass / -pow(dist_y, 2)
+
         except ZeroDivisionError:
             F_y = 0
 
