@@ -1,17 +1,9 @@
-import unittest
+import testing
 
 from vector import Vector
 
 
-class TestVector(unittest.TestCase):
-
-    def assertEqualVector(self, first, second, msg=None):
-        self.assertEqual(first.x, second.x, msg)
-        self.assertEqual(first.y, second.y, msg)
-
-    def assertAlmostEqualVector(self, first, second, msg=None):
-        self.assertAlmostEqual(first.x, second.x, msg)
-        self.assertAlmostEqual(first.y, second.y, msg)
+class TestVector(testing.TestCase):
 
     def setUp(self):
         self.a = Vector(2, 4)
@@ -49,4 +41,4 @@ class TestVector(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    testing.main()
