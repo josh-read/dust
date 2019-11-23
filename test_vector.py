@@ -20,13 +20,20 @@ class TestVector(unittest.TestCase):
             self.c = Vector('hi', 2 + 3j)
 
     def test_add(self):
-        self.assertAlmostEqualVector(self.a + self.b, Vector(-0.14, -4.23))
+        expected = Vector(-0.14, -4.23)
+        self.assertAlmostEqualVector(self.a + self.b, expected)
+        sum_ = Vector(0, 0)
+        for v in [self.a, self.b]:
+            sum_ += v
+        self.assertAlmostEqualVector(sum_, expected)
 
     def test_multiply(self):
         self.assertEqualVector(2 * self.a, Vector(4, 8))
         self.assertEqualVector(self.a * 2, Vector(4, 8))
+
         self.assertAlmostEqualVector(0.1 * self.b, Vector(-0.214, -0.823))
         self.assertAlmostEqualVector(self.b * 0.1, Vector(-0.214, -0.823))
+
         with self.assertRaises(TypeError):
             'test' * self.a
         with self.assertRaises(TypeError):
