@@ -17,7 +17,7 @@ class Particle:
 
     def __add__(self, other):
         mass = self.mass + other.mass
-        position = self.centre_of_mass(self, other)
+        position = self.centre_of_mass(other)
         momentum = self.momentum + other.momentum
         return Particle(mass, position, momentum)
 
@@ -25,11 +25,12 @@ class Particle:
         return geo.check_collision(self.radius, self.position,
                                    other.radius, other.position)
 
-    def centre_of_mass(self, other):
+    def centre_of_mass(self, other) -> Vector:
         return (self.mass * self.position + other.mass * other.position) \
                 / (self.mass + other.mass)
 
     def two_body_force(self, other):
+        """NEEDS FIX TO ACCOUNT FOR VECTOR SIGN"""
         dist_x = (other.position.x - self.position.x)
         dist_y = (other.position.y - self.position.y)
 
