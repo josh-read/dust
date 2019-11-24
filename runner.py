@@ -2,7 +2,7 @@ from environment import Environment
 from graphics import Graphics
 
 if __name__ == '__main__':
-    e = Environment.random_static(100)
+    e = Environment.random_static(20)
     g = Graphics()
     for i in range(20000):
         e.move()
