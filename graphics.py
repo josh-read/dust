@@ -28,6 +28,7 @@ class Graphics:
     def update(self, ls: list):
         self.d.fill(self.black)
         self.eventHandler()
+        self.updateCameraPosition()
         for p in ls:
             self.drawParticle(p)
     def eventHandler(self):
@@ -43,8 +44,11 @@ class Graphics:
             elif (event.type == pygame.MOUSEBUTTONUP):
                 if (event.button == 1):
                     self.dragging = False
-                    self.mouseUpPos = Vector(event.pos[0], event.pos[1])
-                    self.cameraPosition = self.cameraPosition + (self.mouseDownPos - self.mouseUpPos)
+                    self.mouseDownPos = 0
+    def updateCameraPosition(self):
+        if self.dragging == True:
+            self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]))
+            self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
 #this gon' be sick
 
 #call close to get rid of window
