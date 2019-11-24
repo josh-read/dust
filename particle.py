@@ -36,7 +36,10 @@ class Particle:
         r2 = other.position
         r = geo.scalar_dist(r2, r1)
         u = geo.unit_vector(r2 - r1)
-        return ((G * m1 * m2) / r**2) * u
+        try:
+            return ((G * m1 * m2) / r**2) * u
+        except ZeroDivisionError:
+            return Vector(0, 0)
 
     def net_force(self, dust: list) -> Vector:
         f_net = Vector(0, 0)
