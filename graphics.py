@@ -5,6 +5,7 @@ import math
 
 class Graphics:
     def __init__(self):
+        self.zoom = 1
         self.size = width, height = 800, 500
         self.black = 0, 0, 0
         self.white = 255,255,255
@@ -16,13 +17,19 @@ class Graphics:
         pygame.display.quit()
         pygame.quit()
     def drawParticle(self, p: Particle):
-        pygame.draw.circle(self.d, self.white, (int(p.position.x), int(p.position.y)) , math.floor(p.radius * 50), 3)
+        pygame.draw.circle(self.d, self.white, (int(p.position.x * self.zoom) ,
+                    int(p.position.y * self.zoom)), math.floor(p.radius * 50), 3)
         pygame.display.update()
     def update(self, ls: list):
         self.d.fill(self.black)
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    self.zoom = self.zoom * 1.1
+                elif event.button == 5:
+                    self.zoom = self.zoom * 0.9
         for p in ls:
             self.drawParticle(p)
-            
 #this gon' be sick
 
 #call close to get rid of window
