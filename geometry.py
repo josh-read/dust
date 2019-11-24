@@ -2,7 +2,7 @@ from math import pi, sqrt
 
 from vector import Vector
 
-DENSITY = 10
+DENSITY = 0.2
 
 
 def scalar_dist(p1: Vector, p2: Vector) -> float:

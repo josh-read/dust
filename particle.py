@@ -3,7 +3,7 @@ import random
 from vector import Vector
 import geometry as geo
 
-G = 1
+G = 0.1
 
 
 class Particle:

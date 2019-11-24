@@ -36,13 +36,3 @@ class Environment:
     def move(self):
         for particle in self.particles:
             particle.update(self.particles, DT)
-
-
-if __name__ == '__main__':
-    e = Environment(2, 0)
-    g = Graphics()
-    for i in range(4000):
-        e.move()
-        e.collisions()
-        g.update(e.particles)
-    g.close()
