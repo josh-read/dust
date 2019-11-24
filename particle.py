@@ -50,11 +50,17 @@ class Particle:
             f_net += self.two_body_force(particle)
         return f_net
 
-    def two_body_amomentum(self, other):
+    def two_body_amomentum(self, other) -> float:
         """L = r x p"""
         r = other.position - self.position
         p = other.momentum - self.momentum
         return Vector.cross(r, p)
+
+    def net_amomentum(self, dust: list) -> float:
+        l_net = 0
+        for particle in dust:
+            l_net += self.two_body_amomentum(particle)
+        return l_net
 
     def update(self, dust: list, dt: float):
         self.momentum += dt * self.net_force(dust)
