@@ -2,6 +2,7 @@ import pygame
 from particle import Particle
 from vector import Vector
 import math
+import sys
 
 class Graphics:
     def __init__(self):
@@ -17,7 +18,7 @@ class Graphics:
         self.d = pygame.display.set_mode(self.size)
         self.d.fill(self.black)
     def close(self):
-        pygame.time.delay(2000)
+        pygame.time.delay(500)
         pygame.display.quit()
         pygame.quit()
     def drawParticle(self, p: Particle):
@@ -28,6 +29,7 @@ class Graphics:
     def update(self, ls: list):
         self.d.fill(self.black)
         self.eventHandler()
+        self.updateCameraPosition()
         for p in ls:
             self.drawParticle(p)
     def eventHandler(self):
@@ -40,11 +42,19 @@ class Graphics:
                 if event.button == 1:
                     self.dragging = True
                     self.mouseDownPos = Vector(event.pos[0], event.pos[1])
-            elif (event.type == pygame.MOUSEBUTTONUP):
-                if (event.button == 1):
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
                     self.dragging = False
-                    self.mouseUpPos = Vector(event.pos[0], event.pos[1])
-                    self.cameraPosition = self.cameraPosition + (self.mouseDownPos - self.mouseUpPos)
+                    self.mouseDownPos = 0
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
+            elif event.type == pygame.QUIT:
+                sys.exit()
+    def updateCameraPosition(self):
+        if self.dragging == True:
+            self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]))
+            self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
 #this gon' be sick
 
 #call close to get rid of window

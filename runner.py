@@ -7,18 +7,21 @@ with contextlib.redirect_stdout(None):
 
 
 def run_sim(env: Environment):
-    """Opens a pygame window and runs simulation.
+    """Opens a pygame window and runs simulation forever.
 
     Pygame window is initialised and updated once every 50 iterations that the
-    simulation runs. After 20000 iterations close the window closes again."""
+    simulation runs. Simulation can be closed with ESC key or by clicking on
+    the window close button."""
 
     g = Graphics()
-    for i in range(20000):
+    i = 0
+    while True:
+        i += 1
         env.move()
         env.collisions()
         if i % 50 == 0:
+            i = 0
             g.update(env.particles)
-    g.close()
 
 
 def main():
