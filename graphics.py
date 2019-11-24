@@ -12,22 +12,22 @@ class Graphics:
         self.cameraPosition = Vector(0, 0)
         self.zoom = 1
         self.size = width, height
-        self.black = 0, 0, 0
-        self.white = 255,255,255
+        self.background = 10, 30, 43
+        self.foreground = 255,255,255
         pygame.init()
         self.d = pygame.display.set_mode(self.size)
-        self.d.fill(self.black)
+        self.d.fill(self.background)
     def close(self):
         pygame.time.delay(100)
         pygame.display.quit()
         pygame.quit()
     def drawParticle(self, p: Particle):
         drawnRadius = math.floor(p.radius * self.zoom)
-        pygame.draw.circle(self.d, self.white, (int((p.position.x - self.cameraPosition.x) * self.zoom),
+        pygame.draw.circle(self.d, self.foreground, (int((p.position.x - self.cameraPosition.x) * self.zoom),
                     int((p.position.y - self.cameraPosition.y) * self.zoom)), drawnRadius, drawnRadius)
         pygame.display.update()
     def update(self, ls: list):
-        self.d.fill(self.black)
+        self.d.fill(self.background)
         self.eventHandler()
         self.updateCameraPosition()
         for p in ls:
