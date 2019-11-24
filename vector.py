@@ -46,3 +46,6 @@ class Vector:
             raise TypeError("Unsupported operand type(s) for /: 'Vector' and "
                             + type(other).__name__)
 
+    @staticmethod
+    def cross(v1, v2) -> float:
+        return ((v1.x * v2.y) - (v2.x * v1.y))
