@@ -41,7 +41,7 @@ class Environment:
 if __name__ == '__main__':
     e = Environment(2, 0)
     g = Graphics()
-    for i in range(20):
+    for i in range(4000):
         e.move()
         e.collisions()
         g.update(e.particles)
