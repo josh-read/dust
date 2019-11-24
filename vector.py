@@ -20,6 +20,11 @@ class Vector:
         y = self.y + other.y
         return Vector(x, y)
 
+    def __sub__(self, other):
+        x = self.x - other.x
+        y = self.y - other.y
+        return Vector(x, y)
+
     def __mul__(self, other):
         """Multiplication is only defined as a scalar multiplication."""
         if type(other) == int or type(other) == float:
@@ -33,7 +38,10 @@ class Vector:
     def __truediv__(self, other):
         """Division is only defined as a scalar division."""
         if type(other) == int or type(other) == float:
-            return Vector(self.x / other, self.y / other)
+            try:
+                return Vector(self.x / other, self.y / other)
+            except ZeroDivisionError:
+                return Vector(0, 0)
         else:
             raise TypeError("Unsupported operand type(s) for /: 'Vector' and "
                             + type(other).__name__)

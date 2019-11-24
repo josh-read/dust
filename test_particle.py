@@ -20,6 +20,17 @@ class TestParticle(testing.TestCase):
                 self.a + self.a, Particle(2, Vector(0, 0))
                 )
 
+    def test_mod(self):
+        pass
+
+    def test_two_body_force(self):
+        self.assertAlmostEqualVector(
+                self.a.two_body_force(self.b), Vector(0, 1/100)
+                )
+        self.assertAlmostEqualVector(
+                self.b.two_body_force(self.a), Vector(0, -1/100)
+                )
+
 
 if __name__ == '__main__':
     testing.main()

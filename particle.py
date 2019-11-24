@@ -29,29 +29,14 @@ class Particle:
         return (self.mass * self.position + other.mass * other.position) \
                 / (self.mass + other.mass)
 
-    def two_body_force(self, other):
-        """NEEDS FIX TO ACCOUNT FOR VECTOR SIGN"""
-        dist_x = (other.position.x - self.position.x)
-        dist_y = (other.position.y - self.position.y)
-
-        try:
-            if dist_x >= 0:
-                F_x = G * self.mass * other.mass / pow(dist_x, 2)
-            else:
-                F_x = G * self.mass * other.mass / -pow(dist_x, 2)
-        except ZeroDivisionError:
-            F_x = 0
-
-        try:
-            if dist_y >= 0:
-                F_y = G * self.mass * other.mass / pow(dist_y, 2)
-            else:
-                F_y = G * self.mass * other.mass / -pow(dist_y, 2)
-
-        except ZeroDivisionError:
-            F_y = 0
-
-        return Vector(F_x, F_y)
+    def two_body_force(self, other) -> Vector:
+        m1 = self.mass
+        m2 = other.mass
+        r1 = self.position
+        r2 = other.position
+        r = geo.scalar_dist(r2, r1)
+        u = geo.unit_vector(r2 - r1)
+        return ((G * m1 * m2) / r**2) * u
 
     def net_force(self, dust: list) -> Vector:
         f_net = Vector(0, 0)

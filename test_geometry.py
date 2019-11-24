@@ -17,6 +17,12 @@ class TestGeometry(testing.TestCase):
         self.assertEqual(geo.scalar_dist(self.a, self.c), 3.14)
         self.assertEqual(geo.scalar_dist(self.a, self.d), 5)
 
+    def test_unit_vector(self):
+        self.assertEqualVector(geo.unit_vector(self.a), Vector(0, 0))
+        self.assertEqualVector(geo.unit_vector(self.b), Vector(1, 0))
+        self.assertEqualVector(geo.unit_vector(self.c), Vector(-1, 0))
+        self.assertEqualVector(geo.unit_vector(self.d), Vector(3/5, 4/5))
+
     def test_collision(self):
         self.assertTrue(geo.check_collision(3, self.a, 3, self.b))
         self.assertTrue(geo.check_collision(2.5, self.a, 2.5, self.b))
