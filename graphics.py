@@ -22,10 +22,8 @@ class Graphics:
         pygame.quit()
     def drawParticle(self, p: Particle):
         drawnRadius = math.floor(p.radius * self.zoom)
-        if drawnRadius < 3:
-            drawnRadius = 3
         pygame.draw.circle(self.d, self.white, (int((p.position.x - self.cameraPosition.x) * self.zoom),
-                    int((p.position.y - self.cameraPosition.y) * self.zoom)), drawnRadius, 3)
+                    int((p.position.y - self.cameraPosition.y) * self.zoom)), drawnRadius, drawnRadius)
         pygame.display.update()
     def update(self, ls: list):
         self.d.fill(self.black)
