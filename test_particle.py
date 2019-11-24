@@ -1,6 +1,7 @@
 import testing
 
 from vector import Vector
+import particle
 from particle import Particle
 
 
@@ -27,10 +28,19 @@ class TestParticle(testing.TestCase):
 
     def test_two_body_force(self):
         self.assertAlmostEqualVector(
-                self.a.two_body_force(self.b), Vector(0, 1/100)
+                self.a.two_body_force(self.b), Vector(0, particle.G * 1/100)
                 )
         self.assertAlmostEqualVector(
-                self.b.two_body_force(self.a), Vector(0, -1/100)
+                self.b.two_body_force(self.a), Vector(0, particle.G * -1/100)
+                )
+
+    def test_two_body_amomentum(self):
+        self.b.momentum = Vector(5, 0)
+        self.assertAlmostEqual(
+                self.a.two_body_amomentum(self.b), -50
+                )
+        self.assertAlmostEqual(
+                self.b.two_body_amomentum(self.a), -50
                 )
 
 
