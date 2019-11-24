@@ -56,7 +56,7 @@ class Particle:
         self.position += dt * self.velocity
 
     @classmethod
-    def random(cls):
+    def random_static(cls):
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position)

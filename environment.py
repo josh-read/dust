@@ -1,4 +1,3 @@
-from graphics import Graphics
 from particle import Particle
 
 DT = 1  # Our timestep
@@ -6,16 +5,8 @@ DT = 1  # Our timestep
 
 class Environment:
 
-    def __init__(self, noParticle, totalOhm):
-        """
-        initialises an environment with args:
-        - number of  randomisd particles
-        - total angular momentum"""
-        self.particleCount = noParticle
-        self.totalOhm = 0
-        self.particles = []
-        for i in range(0, self.particleCount):
-            self.particles.append(Particle.random())
+    def __init__(self, particles: list):
+        self.particles = particles
 
     def collisions(self):
         """Function checks for collisions between particles and merges
@@ -36,3 +27,10 @@ class Environment:
     def move(self):
         for particle in self.particles:
             particle.update(self.particles, DT)
+
+    @classmethod
+    def random_static(cls, n: int):
+        particles = []
+        for i in range(n):
+            particles.append(Particle.random_static())
+        return cls(particles)
