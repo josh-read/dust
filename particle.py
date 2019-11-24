@@ -15,6 +15,9 @@ class Particle:
         self.momentum = momentum
         self.velocity = momentum / mass
 
+    def __repr__(self):
+        return f"Particle({self.mass}, {self.position})"
+
     def __add__(self, other):
         mass = self.mass + other.mass
         position = self.centre_of_mass(other)

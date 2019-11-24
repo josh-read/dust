@@ -21,7 +21,9 @@ class TestParticle(testing.TestCase):
                 )
 
     def test_mod(self):
-        pass
+        self.assertTrue(self.a % self.a)
+        self.assertTrue(self.b % self.b)
+        self.assertFalse(self.a % self.b)
 
     def test_two_body_force(self):
         self.assertAlmostEqualVector(
