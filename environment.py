@@ -1,4 +1,5 @@
 from particle import Particle
+from vector import Vector
 
 DT = 1  # Our timestep
 
@@ -33,4 +34,19 @@ class Environment:
         particles = []
         for i in range(n):
             particles.append(Particle.random_static())
+        return cls(particles)
+    
+    @classmethod
+    def nonZeroOhmega(cls, n: int, L):
+        particles = []
+        particles.append(Particle.random_static())   
+        totalParticle = particles[0]
+        for i in range(1, n):
+            particles.append(Particle.random_static())   
+            totalParticle = particles[i] + totalParticle
+        com = totalParticle.position
+        
+            
+        print(com.x)
+        print(com.y)
         return cls(particles)

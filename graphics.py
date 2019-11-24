@@ -5,20 +5,20 @@ import math
 import sys
 
 class Graphics:
-    def __init__(self):
+    def __init__(self, width = 800, height = 500):
         self.dragging = False
         self.mouseDownPos = Vector(0, 0)
         self.mouseUpPos = Vector(0, 0)
         self.cameraPosition = Vector(0, 0)
         self.zoom = 1
-        self.size = width, height = 800, 500
+        self.size = width, height
         self.black = 0, 0, 0
         self.white = 255,255,255
         pygame.init()
         self.d = pygame.display.set_mode(self.size)
         self.d.fill(self.black)
     def close(self):
-        pygame.time.delay(500)
+        pygame.time.delay(100)
         pygame.display.quit()
         pygame.quit()
     def drawParticle(self, p: Particle):
@@ -48,8 +48,10 @@ class Graphics:
                     self.mouseDownPos = 0
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    self.close()
                     sys.exit()
             elif event.type == pygame.QUIT:
+                self.close()
                 sys.exit()
     def updateCameraPosition(self):
         if self.dragging == True:
