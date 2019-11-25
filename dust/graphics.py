@@ -22,7 +22,7 @@ class Graphics:
         self.text = self.font.render('No Mouse Connected', True, self.foreground, self.background) 
         self.textRect = self.text.get_rect()  
         self.textRect.center = (100, 20) 
-
+        self.trackingCOM = False
     def close(self):
         pygame.time.delay(100)
         pygame.display.quit()
@@ -36,9 +36,8 @@ class Graphics:
         self.eventHandler()
         self.updateCameraPosition()    
         for p in ls:
-            self.drawParticle(p)
-        if self.UIOpen:
-            self.drawUI()
+            self.drawParticle(p)        
+        self.drawUI()
         self.d.blit(self.text, self.textRect) 
         pygame.display.update()
     def eventHandler(self):
@@ -60,10 +59,14 @@ class Graphics:
         elif event.button == 1:
             self.mouseDownPos = Vector(event.pos[0], event.pos[1])
             self.text = self.font.render(('%i, %i' % (int(self.mouseDownPos.x), int(self.mouseDownPos.y))), True, self.foreground, self.background)
-            if self.mouseDownPos.x < self.size[0] - 200 or self.UIOpen == False:
+            if self.withinRect(pygame.Rect((self.size[0] - 20, 0), (20, 20))) and self.UIOpen == False:
+                self.UIOpen = True
+            elif self.mouseDownPos.x < self.size[0] - 200 or self.UIOpen == False:
                 self.dragging = True
-            elif self.withinRect(pygame.Rect((808, 9),(180 , 20))):
+            elif self.withinRect(pygame.Rect((self.size[0] - 190, 9),(180 , 20))):
                 self.UIOpen = False
+            elif self.withinRect(pygame.Rect((self.size[0] - 190, 45),(180 , 45))):
+                self.trackingCOM = ~self.trackingCOM
     def withinRect(self, r: pygame.Rect):
         if self.mouseDownPos.x > r.left and self.mouseDownPos.y > r.top \
         and self.mouseDownPos.x < r.left + r.width and self.mouseDownPos.y < r.top + r.height:
@@ -85,8 +88,12 @@ class Graphics:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
     def drawUI(self):
-        UI = pygame.image.load("UserInterface/uILanding.jpg")
-        self.d.blit(UI, (self.size[0] - 200, 0))
+        if self.UIOpen:
+            UI = pygame.image.load("UserInterface/uILanding.jpg")
+            self.d.blit(UI, (self.size[0] - 200, 0))
+        else:
+            UI = pygame.image.load("UserInterface/openSettings.jpg")
+            self.d.blit(UI, (self.size[0] - 20, 0))
   
   
 #this gon' be sicks
