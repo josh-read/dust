@@ -1,10 +1,9 @@
-import pytest
-
 from dust.vector import Vector
 from dust.particle import Particle, G
 
 A = Particle(1, Vector(0, 0))
 B = Particle(1, Vector(0, 10))
+C = Particle(3, Vector(5, 2))
 
 
 class TestParticle:
@@ -41,3 +40,11 @@ class TestParticle:
         b.momentum = Vector(5, 0)
         assert A.two_body_amomentum(b) == -50
         assert b.two_body_amomentum(A) == -50
+
+    def test_com_force(self):
+        """Proof test to check we can't simplify the calculation by
+        measuring force from centre of mass rather than summing each
+        individual particle."""
+        sum_f = A.two_body_force(B) + A.two_body_force(C)
+        com_f = A.two_body_force(B + C)
+        assert sum_f != com_f
