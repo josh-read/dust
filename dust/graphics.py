@@ -35,10 +35,11 @@ class Graphics:
     def update(self, ls: list):
         self.d.fill(self.background)
         self.eventHandler()
-        self.updateCameraPosition()    
+        self.updateCameraPosition(ls)    
         for p in ls:
             self.drawParticle(p)        
         self.drawUI()
+        self.text = self.font.render(('%i, %i   zoom: %i %%' % (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], self.zoom * 100)), True, self.foreground, self.background)
         self.d.blit(self.text, self.textRect) 
         pygame.display.update()
     def eventHandler(self):
@@ -58,8 +59,7 @@ class Graphics:
         elif event.button == 5:
             self.zoom = self.zoom * 0.9
         elif event.button == 1:
-            self.mouseDownPos = Vector(event.pos[0], event.pos[1])
-            self.text = self.font.render(('%i, %i' % (int(self.mouseDownPos.x), int(self.mouseDownPos.y))), True, self.foreground, self.background)
+            self.mouseDownPos = Vector(event.pos[0], event.pos[1])            
             if self.withinRect(pygame.Rect((self.size[0] - 20, 0), (20, 20))) and self.UIOpen == False:
                 self.UIOpen = True
             elif self.mouseDownPos.x < self.size[0] - 200 or self.UIOpen == False:
@@ -84,13 +84,12 @@ class Graphics:
             sys.exit()
         elif event.key == pygame.K_1:
             pass
-    def updateCameraPosition(self):
+    def updateCameraPosition(self, ls: list):
         if self.dragging:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
-        elif self.trackingCOM:
-            pass
-            #self.cameraPosition = sum
+        elif self.trackingCOM:            
+            self.cameraPosition = sum(ls).position - Vector((self.size[0] - 200)/2, self.size[1]/2)
     def drawUI(self):
         currentdir = os.getcwd()
         if self.UIOpen:
