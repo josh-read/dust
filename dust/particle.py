@@ -33,10 +33,14 @@ class Particle:
             return False
 
     def __add__(self, other):
+        if type(other) == int:
+            other = Particle(0, Vector(0, 0))
         mass = self.mass + other.mass
         position = self.centre_of_mass(other)
         momentum = self.momentum + other.momentum
         return Particle(mass, position, momentum)
+
+    __radd__ = __add__
 
     def __neg__(self):
         return Particle(-self.mass, self.position, -self.momentum)
