@@ -31,6 +31,10 @@ class Environment:
         for particle in self.particles:
             particle.update(self.particles, DT)
 
+    def step(self):
+        self.move()
+        self.collisions()
+
     @classmethod
     def random_static(cls, n: int):
         """Create system of n static particles with random positions within the

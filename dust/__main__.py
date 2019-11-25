@@ -17,8 +17,7 @@ def run_sim(env: Environment):
     i = 0
     while True:
         i += 1
-        env.move()
-        env.collisions()
+        env.step()
         if i % 50 == 0:
             i = 0
             g.update(env.particles)
