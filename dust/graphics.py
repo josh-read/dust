@@ -102,7 +102,9 @@ class Graphics:
     def particleSpawnerClicks(self, event):
         if self.mouseDownPos.x < self.size[0] - 200:
             self.dragging = True
-        
+        elif self.withinRect(pygame.Rect((self.size[0] - 95, 420),(80,40))):
+            self.uIParticleSpawn = False
+            self.uILandingOpen = True
     def withinRect(self, r: pygame.Rect):
         if self.mouseDownPos.x > r.left and self.mouseDownPos.y > r.top \
         and self.mouseDownPos.x < r.left + r.width and self.mouseDownPos.y < r.top + r.height:
