@@ -1,33 +1,29 @@
-import testing
+import pytest
 
-from vector import Vector
-import geometry as geo
+from dust.vector import Vector
+import dust.geometry as geo
 
 
-class TestGeometry(testing.TestCase):
+A = Vector(0, 0)
+B = Vector(5, 0)
+C = Vector(-3.14, 0)
+D = Vector(3, 4)
 
-    def setUp(self):
-        self.a = Vector(0, 0)
-        self.b = Vector(5, 0)
-        self.c = Vector(-3.14, 0)
-        self.d = Vector(3, 4)
+
+class TestGeometry:
 
     def test_scalar_dist(self):
-        self.assertEqual(geo.scalar_dist(self.a, self.b), 5)
-        self.assertEqual(geo.scalar_dist(self.a, self.c), 3.14)
-        self.assertEqual(geo.scalar_dist(self.a, self.d), 5)
+        assert geo.scalar_dist(A, B) == 5
+        assert geo.scalar_dist(A, C) == 3.14
+        assert geo.scalar_dist(A, D) == 5
 
     def test_unit_vector(self):
-        self.assertEqualVector(geo.unit_vector(self.a), Vector(0, 0))
-        self.assertEqualVector(geo.unit_vector(self.b), Vector(1, 0))
-        self.assertEqualVector(geo.unit_vector(self.c), Vector(-1, 0))
-        self.assertEqualVector(geo.unit_vector(self.d), Vector(3/5, 4/5))
+        assert geo.unit_vector(A) == Vector(0, 0)
+        assert geo.unit_vector(B) == Vector(1, 0)
+        assert geo.unit_vector(C) == Vector(-1, 0)
+        assert geo.unit_vector(D) == Vector(3/5, 4/5)
 
     def test_collision(self):
-        self.assertTrue(geo.check_collision(3, self.a, 3, self.b))
-        self.assertTrue(geo.check_collision(2.5, self.a, 2.5, self.b))
-        self.assertFalse(geo.check_collision(2, self.a, 2, self.b))
-
-
-if __name__ == '__main__':
-    testing.main()
+        assert geo.check_collision(3, A, 3, B)
+        assert geo.check_collision(2.5, A, 2.5, B)
+        assert not geo.check_collision(2, A, 2, B)

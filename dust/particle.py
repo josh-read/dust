@@ -1,7 +1,8 @@
 import random
+from math import isclose
 
-from vector import Vector
-import geometry as geo
+from dust.vector import Vector
+import dust.geometry as geo
 
 G = 0.1
 
@@ -17,6 +18,13 @@ class Particle:
 
     def __repr__(self):
         return f"Particle({self.mass}, {self.position})"
+
+    def __eq__(self, other):
+        if (isclose(self.mass, other.mass) and self.position == other.position
+                and self.momentum == other.momentum):
+            return True
+        else:
+            return False
 
     def __add__(self, other):
         mass = self.mass + other.mass

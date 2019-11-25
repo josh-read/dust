@@ -1,3 +1,6 @@
+from math import isclose
+
+
 class Vector:
 
     def __init__(self, x: float, y: float):
@@ -15,10 +18,20 @@ class Vector:
     def __repr__(self):
         return f"Vector({self.x:.2f}, {self.y:.2f})"
 
+    def __eq__(self, other):
+        if isclose(self.x, other.x) and isclose(self.y, other.y):
+            return True
+        else:
+            return False
+
     def __add__(self, other):
+        if type(other) == int:
+            other = Vector(0, 0)
         x = self.x + other.x
         y = self.y + other.y
         return Vector(x, y)
+
+    __radd__ = __add__
 
     def __sub__(self, other):
         x = self.x - other.x

@@ -1,6 +1,6 @@
 from math import pi, sqrt
 
-from vector import Vector
+from dust.vector import Vector
 
 DENSITY = 0.2
 
