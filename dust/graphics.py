@@ -18,11 +18,12 @@ class Graphics:
         pygame.init()
         pygame.display.set_caption('Dust in Space') 
         self.d = pygame.display.set_mode(self.size)
-        self.UIOpen = True
+        self.uILandingOpen = True
         self.font = pygame.font.Font('freesansbold.ttf', 16) 
         self.text = self.font.render('No Mouse Connected', True, self.foreground, self.background) 
         self.textRect = self.text.get_rect()  
         self.textRect.center = (100, 20) 
+        self.uIParticleSpawn = False
         self.trackingCOM = False
     def close(self):
         pygame.time.delay(100)
@@ -60,14 +61,17 @@ class Graphics:
             self.zoom = self.zoom * 0.9
         elif event.button == 1:
             self.mouseDownPos = Vector(event.pos[0], event.pos[1])            
-            if self.withinRect(pygame.Rect((self.size[0] - 20, 0), (20, 20))) and self.UIOpen == False:
-                self.UIOpen = True
-            elif self.mouseDownPos.x < self.size[0] - 200 or self.UIOpen == False:
+            if self.withinRect(pygame.Rect((self.size[0] - 20, 0), (20, 20))) and ~self.uILandingOpen and ~self.uIParticleSpawn:
+                self.uILandingOpen = True
+            elif self.mouseDownPos.x < self.size[0] - 200 or self.uILandingOpen == False:
                 self.dragging = True
             elif self.withinRect(pygame.Rect((self.size[0] - 190, 9),(180 , 20))):
-                self.UIOpen = False
+                self.uILandingOpen = False
             elif self.withinRect(pygame.Rect((self.size[0] - 190, 45),(180 , 45))):
                 self.trackingCOM = ~self.trackingCOM
+            elif self.withinRect(pygame.Rect((self.size[0] - 190, 100),(180, 45))):
+                self.uILandingOpen = False
+                self.uIParticleSpawn = True
     def withinRect(self, r: pygame.Rect):
         if self.mouseDownPos.x > r.left and self.mouseDownPos.y > r.top \
         and self.mouseDownPos.x < r.left + r.width and self.mouseDownPos.y < r.top + r.height:
@@ -92,8 +96,12 @@ class Graphics:
             self.cameraPosition = sum(ls).position - Vector((self.size[0] - 200)/2, self.size[1]/2)
     def drawUI(self):
         currentdir = os.path.dirname(os.path.realpath(__file__))
-        if self.UIOpen:
+        if self.uILandingOpen:
             path = os.path.join(currentdir, "UserInterface/uILanding.jpg")
+            UI = pygame.image.load(path)
+            self.d.blit(UI, (self.size[0] - 200, 0))
+        elif self.uIParticleSpawn:
+            path = os.path.join(currentdir, "UserInterface/particleSpawner.jpg")
             UI = pygame.image.load(path)
             self.d.blit(UI, (self.size[0] - 200, 0))
         else:
