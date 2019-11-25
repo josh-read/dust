@@ -5,7 +5,7 @@ import math
 import sys
 
 class Graphics:
-    def __init__(self, width = 800, height = 500):
+    def __init__(self, width = 1000, height = 500):
         self.dragging = False
         self.mouseDownPos = Vector(0, 0)
         self.mouseUpPos = Vector(0, 0)
@@ -13,7 +13,8 @@ class Graphics:
         self.zoom = 1
         self.size = width, height
         self.background = 10, 30, 43
-        self.foreground = 255,255,255
+        self.foreground = 255, 255, 255
+        self.uibackground = 28, 20, 15
         pygame.init()
         self.d = pygame.display.set_mode(self.size)
         self.d.fill(self.background)
@@ -24,14 +25,15 @@ class Graphics:
     def drawParticle(self, p: Particle):
         drawnRadius = math.floor(p.radius * self.zoom)
         pygame.draw.circle(self.d, self.foreground, (int((p.position.x - self.cameraPosition.x) * self.zoom),
-                    int((p.position.y - self.cameraPosition.y) * self.zoom)), drawnRadius, drawnRadius)
-        pygame.display.update()
+                    int((p.position.y - self.cameraPosition.y) * self.zoom)), drawnRadius, drawnRadius)       
     def update(self, ls: list):
         self.d.fill(self.background)
         self.eventHandler()
-        self.updateCameraPosition()
+        self.updateCameraPosition()    
         for p in ls:
             self.drawParticle(p)
+        self.drawUI()
+        pygame.display.update()
     def eventHandler(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -59,7 +61,9 @@ class Graphics:
         if self.dragging == True:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
-#this gon' be sick
+    def drawUI(self):
+        pygame.draw.rect(self.d, self.uibackground, pygame.Rect(800, 000, 200, 500))
+#this gon' be sicks
 
 #call close to get rid of window
 #call update and pass list of particles to update graphics
