@@ -3,6 +3,7 @@ from particle import Particle
 from vector import Vector
 import math
 import sys
+import os
 
 class Graphics:
     def __init__(self, width = 1000, height = 500):
@@ -84,15 +85,21 @@ class Graphics:
         elif event.key == pygame.K_1:
             pass
     def updateCameraPosition(self):
-        if self.dragging == True:
+        if self.dragging:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+        elif self.trackingCOM:
+            pass
+            #self.cameraPosition = sum
     def drawUI(self):
+        currentdir = os.getcwd()
         if self.UIOpen:
-            UI = pygame.image.load("UserInterface/uILanding.jpg")
+            path = os.path.join(currentdir, "UserInterface/uILanding.jpg")
+            UI = pygame.image.load(path)
             self.d.blit(UI, (self.size[0] - 200, 0))
         else:
-            UI = pygame.image.load("UserInterface/openSettings.jpg")
+            path = os.path.join(currentdir, "UserInterface/openSettings.jpg")
+            UI = pygame.image.load(path)
             self.d.blit(UI, (self.size[0] - 20, 0))
   
   
