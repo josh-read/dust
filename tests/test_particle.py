@@ -15,6 +15,9 @@ class TestParticle:
     def test_add(self):
         assert A + B == Particle(2, Vector(0, 5))
 
+    def test_sum(self):
+        assert sum([A, B]) == A + B
+
     def test_sub(self):
         assert (A + B) - B == A
 
