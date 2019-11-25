@@ -92,7 +92,7 @@ class Graphics:
             pass
             #self.cameraPosition = sum
     def drawUI(self):
-        currentdir = os.getcwd()
+        currentdir = os.path.dirname(os.path.realpath(__file__))
         if self.UIOpen:
             path = os.path.join(currentdir, "UserInterface/uILanding.jpg")
             UI = pygame.image.load(path)
