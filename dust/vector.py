@@ -24,6 +24,9 @@ class Vector:
         else:
             return False
 
+    def __neg__(self):
+        return Vector(-self.x, -self.y)
+
     def __add__(self, other):
         if type(other) == int:
             other = Vector(0, 0)

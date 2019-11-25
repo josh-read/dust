@@ -15,6 +15,15 @@ class TestParticle:
     def test_add(self):
         assert A + B == Particle(2, Vector(0, 5))
 
+    def test_sub(self):
+        assert (A + B) - B == A
+
+    def test_neg(self):
+        assert (-A) == Particle(-1, Vector(0, 0))
+        assert (-B) == Particle(-1, Vector(0, 10))
+        assert - Particle(2.5, Vector(0.2, 93.5), Vector(34.1, -52.1)) \
+            == Particle(-2.5, Vector(0.2, 93.5), Vector(-34.1, 52.1))
+
     def test_mod(self):
         assert A % A
         assert B % B
