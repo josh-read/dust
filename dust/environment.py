@@ -7,6 +7,7 @@ DT = 1  # Our timestep
 class Environment:
 
     def __init__(self, particles: list):
+        """Initialise environment with a list of particles."""
         self.particles = particles
 
     def collisions(self):
@@ -26,27 +27,15 @@ class Environment:
                         pass
 
     def move(self):
+        """Update system of particles to new position after timestep."""
         for particle in self.particles:
             particle.update(self.particles, DT)
 
     @classmethod
     def random_static(cls, n: int):
+        """Create system of n static particles with random positions within the
+        window size"""
         particles = []
         for i in range(n):
             particles.append(Particle.random_static())
-        return cls(particles)
-    
-    @classmethod
-    def nonZeroOhmega(cls, n: int, L):
-        particles = []
-        particles.append(Particle.random_static())   
-        totalParticle = particles[0]
-        for i in range(1, n):
-            particles.append(Particle.random_static())   
-            totalParticle = particles[i] + totalParticle
-        com = totalParticle.position
-        
-            
-        print(com.x)
-        print(com.y)
         return cls(particles)
