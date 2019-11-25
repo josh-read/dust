@@ -3,6 +3,7 @@ from particle import Particle
 from vector import Vector
 import math
 import sys
+from pathlib import Path
 
 class Graphics:
     def __init__(self, width = 1000, height = 500):
@@ -18,6 +19,9 @@ class Graphics:
         pygame.init()
         self.d = pygame.display.set_mode(self.size)
         self.d.fill(self.background)
+        self.globalPath = Path('.')      
+        for i in list(self.globalPath.glob('**/*')):
+            print(i)
     def close(self):
         pygame.time.delay(100)
         pygame.display.quit()
@@ -61,8 +65,11 @@ class Graphics:
         if self.dragging == True:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
-    def drawUI(self):
-        pygame.draw.rect(self.d, self.uibackground, pygame.Rect(800, 000, 200, 500))
+    def drawUI(self):               
+        UI = pygame.image.load("/home/ben/Programming/Python/dust/dust/UserInterface/uILanding.jpg")
+        self.d.blit(UI, (800, 0))
+  
+  
 #this gon' be sicks
 
 #call close to get rid of window
