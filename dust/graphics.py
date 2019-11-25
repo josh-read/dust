@@ -50,12 +50,14 @@ class Graphics:
                 if event.key == pygame.K_ESCAPE:
                     self.close()
                     sys.exit()
+                elif event.key == pygame.K_1:
+                    pass
             elif event.type == pygame.QUIT:
                 self.close()
                 sys.exit()
     def updateCameraPosition(self):
         if self.dragging == True:
-            self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]))
+            self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
 #this gon' be sick
 
