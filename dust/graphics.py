@@ -3,7 +3,6 @@ from particle import Particle
 from vector import Vector
 import math
 import sys
-from pathlib import Path
 
 class Graphics:
     def __init__(self, width = 1000, height = 500):
@@ -15,13 +14,15 @@ class Graphics:
         self.size = width, height
         self.background = 10, 30, 43
         self.foreground = 255, 255, 255
-        self.uibackground = 28, 20, 15
         pygame.init()
+        pygame.display.set_caption('Dust in Space') 
         self.d = pygame.display.set_mode(self.size)
-        self.d.fill(self.background)
-        self.globalPath = Path('.')      
-        for i in list(self.globalPath.glob('**/*')):
-            print(i)
+        self.UIOpen = True
+        self.font = pygame.font.Font('freesansbold.ttf', 16) 
+        self.text = self.font.render('No Mouse Connected', True, self.foreground, self.background) 
+        self.textRect = self.text.get_rect()  
+        self.textRect.center = (100, 20) 
+
     def close(self):
         pygame.time.delay(100)
         pygame.display.quit()
@@ -36,39 +37,56 @@ class Graphics:
         self.updateCameraPosition()    
         for p in ls:
             self.drawParticle(p)
-        self.drawUI()
+        if self.UIOpen:
+            self.drawUI()
+        self.d.blit(self.text, self.textRect) 
         pygame.display.update()
     def eventHandler(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 4:
-                    self.zoom = self.zoom * 1.1
-                elif event.button == 5:
-                    self.zoom = self.zoom * 0.9
-                if event.button == 1:
-                    self.dragging = True
-                    self.mouseDownPos = Vector(event.pos[0], event.pos[1])
+                self.mouseDownHandler(event)
             elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:
-                    self.dragging = False
-                    self.mouseDownPos = 0
+                self.mouseUpHandler(event)
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.close()
-                    sys.exit()
-                elif event.key == pygame.K_1:
-                    pass
+                self.keyDownHandler(event)
             elif event.type == pygame.QUIT:
                 self.close()
                 sys.exit()
+    def mouseDownHandler(self, event):
+        if event.button == 4:
+            self.zoom = self.zoom * 1.1
+        elif event.button == 5:
+            self.zoom = self.zoom * 0.9
+        elif event.button == 1:
+            self.mouseDownPos = Vector(event.pos[0], event.pos[1])
+            self.text = self.font.render(('%i, %i' % (int(self.mouseDownPos.x), int(self.mouseDownPos.y))), True, self.foreground, self.background)
+            if self.mouseDownPos.x < self.size[0] - 200 or self.UIOpen == False:
+                self.dragging = True
+            elif self.withinRect(pygame.Rect((808, 9),(180 , 20))):
+                self.UIOpen = False
+    def withinRect(self, r: pygame.Rect):
+        if self.mouseDownPos.x > r.left and self.mouseDownPos.y > r.top \
+        and self.mouseDownPos.x < r.left + r.width and self.mouseDownPos.y < r.top + r.height:
+            return True
+        else:
+            return False
+    def mouseUpHandler(self, event):
+        if event.button == 1:
+            self.dragging = False
+            self.mouseDownPos = 0
+    def keyDownHandler(self, event):
+        if event.key == pygame.K_ESCAPE:
+            self.close()
+            sys.exit()
+        elif event.key == pygame.K_1:
+            pass
     def updateCameraPosition(self):
         if self.dragging == True:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
     def drawUI(self):
-        pass               
-        #UI = pygame.image.load("/home/ben/Programming/Python/dust/dust/UserInterface/uILanding.jpg")
-        #self.d.blit(UI, (800, 0))
+        UI = pygame.image.load("UserInterface/uILanding.jpg")
+        self.d.blit(UI, (self.size[0] - 200, 0))
   
   
 #this gon' be sicks
