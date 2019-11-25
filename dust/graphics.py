@@ -65,9 +65,10 @@ class Graphics:
         if self.dragging == True:
             self.cameraPosition = self.cameraPosition + (self.mouseDownPos - Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])) * (1 / self.zoom) 
             self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
-    def drawUI(self):               
-        UI = pygame.image.load("/home/ben/Programming/Python/dust/dust/UserInterface/uILanding.jpg")
-        self.d.blit(UI, (800, 0))
+    def drawUI(self):
+        pass               
+        #UI = pygame.image.load("/home/ben/Programming/Python/dust/dust/UserInterface/uILanding.jpg")
+        #self.d.blit(UI, (800, 0))
   
   
 #this gon' be sicks
