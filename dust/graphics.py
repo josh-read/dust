@@ -77,19 +77,32 @@ class Graphics:
         elif event.button == 5:
             self.zoom = self.zoom * 0.9
         elif event.button == 1:
-            self.mouseDownPos = Vector(event.pos[0], event.pos[1])            
-            if self.withinRect(pygame.Rect((self.size[0] - 20, 0), (20, 20))) and ~self.uILandingOpen and ~self.uIParticleSpawn:
-                self.uILandingOpen = True
-            elif self.mouseDownPos.x < self.size[0] - 200 or self.uILandingOpen == False:
-                self.dragging = True
-            elif self.withinRect(pygame.Rect((self.size[0] - 190, 9),(180 , 20))):
+            self.mouseDownPos = Vector(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+            if self.uILandingOpen:
+                self.initialUIClicks(event)
+            elif self.uIParticleSpawn:
+                self.particleSpawnerClicks(event)
+            else:
+                self.noUIClicks(event)
+    def initialUIClicks(self, event):
+        if self.mouseDownPos.x < self.size[0] - 200:
+            self.dragging = True
+        elif self.withinRect(pygame.Rect((self.size[0] - 190, 100),(180, 45))):
+            self.uILandingOpen = False
+            self.uIParticleSpawn = True
+        elif self.withinRect(pygame.Rect((self.size[0] - 190, 9),(180 , 20))):
                 self.uILandingOpen = False
-            elif self.withinRect(pygame.Rect((self.size[0] - 190, 45),(180 , 45))):
+        elif self.withinRect(pygame.Rect((self.size[0] - 190, 45),(180 , 45))):
                 self.trackingCOM = ~self.trackingCOM
-            elif self.withinRect(pygame.Rect((self.size[0] - 190, 100),(180, 45))):
-                self.uILandingOpen = False
-                self.uIParticleSpawn = True
-
+    def noUIClicks(self, event):
+        if self.withinRect(pygame.Rect((self.size[0] - 20, 0), (20, 20))):
+            self.uILandingOpen = True
+        else:
+            self.dragging = True
+    def particleSpawnerClicks(self, event):
+        if self.mouseDownPos.x < self.size[0] - 200:
+            self.dragging = True
+        
     def withinRect(self, r: pygame.Rect):
         if self.mouseDownPos.x > r.left and self.mouseDownPos.y > r.top \
         and self.mouseDownPos.x < r.left + r.width and self.mouseDownPos.y < r.top + r.height:
