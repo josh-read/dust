@@ -91,7 +91,7 @@ class Graphics:
         elif self.trackingCOM:            
             self.cameraPosition = sum(ls).position - Vector((self.size[0] - 200)/2, self.size[1]/2)
     def drawUI(self):
-        currentdir = os.getcwd()
+        currentdir = os.path.dirname(os.path.realpath(__file__))
         if self.UIOpen:
             path = os.path.join(currentdir, "UserInterface/uILanding.jpg")
             UI = pygame.image.load(path)
