@@ -28,7 +28,7 @@ class Graphics:
         self.textRect = self.text.get_rect()
         self.textRect.center = (100, 20)
         self.trackingCOM = False
-
+        self.uIParticleSpawn = False
     def close(self):
         pygame.time.delay(100)
         pygame.display.quit()
