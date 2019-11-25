@@ -1,4 +1,5 @@
-from math import isclose
+from math import isclose, sin, cos
+from math import radians as rad
 
 
 class Vector:
@@ -65,3 +66,10 @@ class Vector:
     @staticmethod
     def cross(v1, v2) -> float:
         return ((v1.x * v2.y) - (v2.x * v1.y))
+
+    def rotate(self, angle: float, radians=False) -> 'Vector':
+        """This function takes the angle in degrees."""
+        angle = angle if radians else rad(angle)
+        x = cos(angle) * self.x - sin(angle) * self.y
+        y = sin(angle) * self.x - cos(angle) * self.y
+        return Vector(x, y)

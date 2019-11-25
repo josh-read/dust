@@ -39,7 +39,7 @@ def main():
     args = parser.parse_args()
 
     # Create environment and run simulation
-    env = Environment.random_static(args.n)
+    env = Environment.rotating(args.n, 1)
     run_sim(env)
 
 
