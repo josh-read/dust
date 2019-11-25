@@ -12,12 +12,18 @@ class Particle:
     def __init__(self, mass, position, momentum=Vector(0, 0)):
         self.mass = mass
         self.position = position
-        self.radius = geo.radius_from_mass(mass)
+        try:
+            self.radius = geo.radius_from_mass(mass)
+        except ValueError:  # Raised when negative mass is used
+            self.radius = 0
         self.momentum = momentum
         self.velocity = momentum / mass
 
     def __repr__(self):
-        return f"Particle({self.mass}, {self.position})"
+        return (f"Particle("
+                f"Mass({self.mass:.2f}), "
+                f"Pos({self.position}), "
+                f"Mom({self.momentum}))")
 
     def __eq__(self, other):
         if (isclose(self.mass, other.mass) and self.position == other.position
@@ -32,13 +38,19 @@ class Particle:
         momentum = self.momentum + other.momentum
         return Particle(mass, position, momentum)
 
+    def __neg__(self):
+        return Particle(-self.mass, self.position, -self.momentum)
+
+    def __sub__(self, other):
+        return self + (- other)
+
     def __mod__(self, other) -> bool:
         return geo.check_collision(self.radius, self.position,
                                    other.radius, other.position)
 
     def centre_of_mass(self, other) -> Vector:
         return (self.mass * self.position + other.mass * other.position) \
-                / (self.mass + other.mass)
+                / (abs(self.mass) + abs(other.mass))
 
     def two_body_force(self, other) -> Vector:
         m1 = self.mass
@@ -80,3 +92,11 @@ class Particle:
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position)
+
+    @classmethod
+    def static(cls, position_distribution):
+        pass
+
+    @classmethod
+    def dynamic(cls, position_distribution, momentum_distribution):
+        pass
