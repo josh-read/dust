@@ -1,5 +1,6 @@
 from particle import Particle
 from vector import Vector
+from geometry import unit_vector
 
 DT = 1  # Our timestep
 
@@ -42,4 +43,14 @@ class Environment:
         particles = []
         for i in range(n):
             particles.append(Particle.random_static())
+        return cls(particles)
+
+    @classmethod
+    def rotating(cls, n: int, l: float) -> 'Environment':
+        particles = [Particle.random_static() for _ in range(n)]
+        com = sum(particles).position
+        for particle in particles:
+            r = particle.position - com
+            u = unit_vector(r).rotate(90)
+            particle.momentum = l * u
         return cls(particles)
