@@ -1,5 +1,5 @@
 import random
-from math import isclose
+from math import isclose, pi, sqrt
 
 from dust.vector import Vector
 import dust.geometry as geo
@@ -10,12 +10,13 @@ class Particle:
     def __init__(self, mass, position, momentum=Vector(0, 0), rho=0.2):
         self.mass = mass
         self.position = position
-        try:
-            self.radius = geo.radius_from_mass(mass, rho)
-        except ValueError:  # Raised when negative mass is used
-            self.radius = 0
         self.momentum = momentum
         self.velocity = momentum / mass
+        self.rho = rho
+        try:
+            self.radius = self.radius_from_mass()
+        except ValueError:  # Raised when negative mass is used
+            self.radius = 0
 
     def __repr__(self):
         return (f"Particle("
@@ -49,6 +50,9 @@ class Particle:
     def __mod__(self, other) -> bool:
         return geo.check_collision(self.radius, self.position,
                                    other.radius, other.position)
+
+    def radius_from_mass(self) -> float:
+        return sqrt(self.mass/(pi * self.rho))
 
     def centre_of_mass(self, other) -> Vector:
         return (self.mass * self.position + other.mass * other.position) \

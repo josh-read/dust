@@ -19,7 +19,3 @@ def check_collision(r1: float, p1: Vector, r2: float, p2: Vector) -> bool:
         return True
     else:
         return False
-
-
-def radius_from_mass(mass: float, rho: float) -> float:
-    return sqrt(mass/(pi * rho))
