@@ -2,7 +2,7 @@ import random
 from math import isclose, pi, sqrt
 
 from dust.vector import Vector
-import dust.geometry as geo
+import dust.geometry as geom
 
 
 class Particle:
@@ -48,8 +48,7 @@ class Particle:
         return self + (- other)
 
     def __mod__(self, other) -> bool:
-        return geo.check_collision(self.radius, self.position,
-                                   other.radius, other.position)
+        return self.check_collision(other)
 
     def radius_from_mass(self) -> float:
         return sqrt(self.mass/(pi * self.rho))
@@ -63,8 +62,8 @@ class Particle:
         m2 = other.mass
         r1 = self.position
         r2 = other.position
-        r = geo.scalar_dist(r2, r1)
-        u = geo.unit_vector(r2 - r1)
+        r = geom.scalar_dist(r2, r1)
+        u = geom.unit_vector(r2 - r1)
         try:
             return ((g * m1 * m2) / r**2) * u
         except ZeroDivisionError:
@@ -88,6 +87,14 @@ class Particle:
             l_net += self.two_body_amomentum(particle)
         return l_net
 
+    def check_collision(self, other) -> bool:
+        critical_distance = self.radius + other.radius
+        particle_seperation = geom.scalar_dist(self.position, other.position)
+        if particle_seperation <= critical_distance:
+            return True
+        else:
+            return False
+
     def update(self, dust: list, dt: float, g: float):
         self.momentum += dt * self.net_force(dust, g)
         self.velocity = self.momentum / self.mass
@@ -98,11 +105,3 @@ class Particle:
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position, rho=rho)
-
-    @classmethod
-    def static(cls, position_distribution):
-        pass
-
-    @classmethod
-    def dynamic(cls, position_distribution, momentum_distribution):
-        pass
