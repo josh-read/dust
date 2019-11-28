@@ -4,16 +4,14 @@ from math import isclose
 from dust.vector import Vector
 import dust.geometry as geo
 
-G = 0.1
-
 
 class Particle:
 
-    def __init__(self, mass, position, momentum=Vector(0, 0)):
+    def __init__(self, mass, position, momentum=Vector(0, 0), rho=0.2):
         self.mass = mass
         self.position = position
         try:
-            self.radius = geo.radius_from_mass(mass)
+            self.radius = geo.radius_from_mass(mass, rho)
         except ValueError:  # Raised when negative mass is used
             self.radius = 0
         self.momentum = momentum
@@ -56,7 +54,7 @@ class Particle:
         return (self.mass * self.position + other.mass * other.position) \
                 / (abs(self.mass) + abs(other.mass))
 
-    def two_body_force(self, other) -> Vector:
+    def two_body_force(self, other, g) -> Vector:
         m1 = self.mass
         m2 = other.mass
         r1 = self.position
@@ -64,14 +62,14 @@ class Particle:
         r = geo.scalar_dist(r2, r1)
         u = geo.unit_vector(r2 - r1)
         try:
-            return ((G * m1 * m2) / r**2) * u
+            return ((g * m1 * m2) / r**2) * u
         except ZeroDivisionError:
             return Vector(0, 0)
 
-    def net_force(self, dust: list) -> Vector:
+    def net_force(self, dust: list, g: float) -> Vector:
         f_net = Vector(0, 0)
         for particle in dust:
-            f_net += self.two_body_force(particle)
+            f_net += self.two_body_force(particle, g)
         return f_net
 
     def two_body_amomentum(self, other) -> float:
@@ -86,16 +84,16 @@ class Particle:
             l_net += self.two_body_amomentum(particle)
         return l_net
 
-    def update(self, dust: list, dt: float):
-        self.momentum += dt * self.net_force(dust)
+    def update(self, dust: list, dt: float, g: float):
+        self.momentum += dt * self.net_force(dust, g)
         self.velocity = self.momentum / self.mass
         self.position += dt * self.velocity
 
     @classmethod
-    def random_static(cls):
+    def random_static(cls, rho):
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
-        return cls(mass, position)
+        return cls(mass, position, rho=rho)
 
     @classmethod
     def static(cls, position_distribution):

@@ -2,8 +2,6 @@ from math import pi, sqrt
 
 from dust.vector import Vector
 
-DENSITY = 0.2
-
 
 def scalar_dist(p1: Vector, p2: Vector) -> float:
     dx = p2.x - p1.x
@@ -23,5 +21,5 @@ def check_collision(r1: float, p1: Vector, r2: float, p2: Vector) -> bool:
         return False
 
 
-def radius_from_mass(mass: float) -> float:
-    return sqrt(mass/(pi * DENSITY))
+def radius_from_mass(mass: float, rho: float) -> float:
+    return sqrt(mass/(pi * rho))
