@@ -1,5 +1,4 @@
-from math import isclose, sin, cos
-from math import radians as rad
+from math import isclose, sin, cos, sqrt, radians as rad
 
 
 class Vector:
@@ -62,6 +61,14 @@ class Vector:
         else:
             raise TypeError("Unsupported operand type(s) for /: 'Vector' and "
                             + type(other).__name__)
+
+    def scalar_dist(self, other) -> float:
+        dx = other.x - self.x
+        dy = other.y - self.y
+        return sqrt(pow(dx, 2) + pow(dy, 2))
+
+    def unit_vector(self):
+        return self / self.scalar_dist(Vector(0, 0))
 
     @staticmethod
     def cross(v1, v2) -> float:
