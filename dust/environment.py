@@ -1,6 +1,5 @@
 from particle import Particle
 from vector import Vector
-from geometry import unit_vector
 
 
 class Environment:
@@ -52,6 +51,6 @@ class Environment:
         com = sum(particles).position
         for particle in particles:
             r = particle.position - com
-            u = unit_vector(r).rotate(90)
+            u = r.unit_vector().rotate(90)
             particle.momentum = l * u
         return cls(particles, **kwargs)

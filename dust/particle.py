@@ -2,17 +2,28 @@ import random
 from math import isclose, pi, sqrt
 
 from dust.vector import Vector
-import dust.geometry as geom
 
 
 class Particle:
 
     def __init__(self, mass, position, momentum=Vector(0, 0), rho=0.2):
-        self.mass = mass
+        self._mass = mass
         self.position = position
         self.momentum = momentum
         self.velocity = momentum / mass
         self.rho = rho
+        try:
+            self.radius = self.radius_from_mass()
+        except ValueError:  # Raised when negative mass is used
+            self.radius = 0
+
+    @property
+    def mass(self):
+        return self._mass
+
+    @mass.setter
+    def mass(self, mass):
+        self._mass = mass
         try:
             self.radius = self.radius_from_mass()
         except ValueError:  # Raised when negative mass is used
@@ -62,8 +73,8 @@ class Particle:
         m2 = other.mass
         r1 = self.position
         r2 = other.position
-        r = geom.scalar_dist(r2, r1)
-        u = geom.unit_vector(r2 - r1)
+        r = r2.scalar_dist(r1)
+        u = (r2-r1).unit_vector()
         try:
             return ((g * m1 * m2) / r**2) * u
         except ZeroDivisionError:
@@ -89,7 +100,7 @@ class Particle:
 
     def check_collision(self, other) -> bool:
         critical_distance = self.radius + other.radius
-        particle_seperation = geom.scalar_dist(self.position, other.position)
+        particle_seperation = self.position.scalar_dist(other.position)
         if particle_seperation <= critical_distance:
             return True
         else:

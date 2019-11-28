@@ -6,7 +6,6 @@ import pygame
 
 from particle import Particle
 from vector import Vector
-import geometry as geo
 
 class Graphics:
 
@@ -161,10 +160,6 @@ class Graphics:
             if self.massTextBoxEditable == True:
                 self.massTextBoxEditable = False
                 self.virtualParticle.mass = self.typedInt
-                try:
-                    self.virtualParticle.radius = geo.radius_from_mass(self.virtualParticle.mass)
-                except ValueError:  # Raised when negative mass is used
-                    self.virtualParticle.radius = 0
                 self.typedInt = 0
             if self.velocityTextBoxEditable == True:
                 self.velocityTextBoxEditable = False
