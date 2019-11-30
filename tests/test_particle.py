@@ -37,6 +37,16 @@ class TestParticle:
         assert A.two_body_force(B, g) == Vector(0, g * 1/100)
         assert B.two_body_force(A, g) == Vector(0, g * -1/100)
 
+    def test_quick_force(self):
+        g = 0.1
+        f_A = A.two_body_force(B, g) + A.two_body_force(C, g)
+        f_B = B.two_body_force(A, g) + B.two_body_force(C, g)
+        f_C = C.two_body_force(A, g) + C.two_body_force(B, g)
+        force_list_man = [f_A, f_B, f_C]
+        particles = [A, B, C]
+        force_list_auto = Particle.quick_force(particles)
+        assert force_list_man == force_list_auto
+
     def test_two_body_amomentum(self):
         b = B
         b.momentum = Vector(5, 0)
