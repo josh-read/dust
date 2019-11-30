@@ -101,7 +101,8 @@ class Particle:
         return forces
 
     def two_body_amomentum(self, other) -> float:
-        """L = r x p"""
+        """Returns the angular momentum of particle relative to other.
+        L = r x p."""
         r = other.position - self.position
         p = other.momentum - self.momentum
         return Vector.cross(r, p)
@@ -130,9 +131,3 @@ class Particle:
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position, rho=rho)
-
-
-if __name__ == '__main__':
-    particles = [Particle.random_static(0.1) for _ in range(5)]
-    print(particles)
-    Particle.quick_force(particles)
