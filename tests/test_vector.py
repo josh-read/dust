@@ -42,6 +42,12 @@ class TestAdd:
         assert sum([Vector(2.245, -4.634), Vector(23.420, -12.528)]) \
                                         == Vector(25.665, -17.162)
 
+    def test_iter_sum(self):
+        s = Vector(0, 0)
+        for v in [Vector(2.245, -4.634), Vector(23.420, -12.528)]:
+            s += v
+        assert s == Vector(25.665, -17.162)
+
 
 class TestMultiply:
 
