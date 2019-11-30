@@ -1,9 +1,10 @@
 from dust.vector import Vector
-from dust.particle import Particle, G
+from dust.particle import Particle
 
 A = Particle(1, Vector(0, 0))
 B = Particle(1, Vector(0, 10))
 C = Particle(3, Vector(5, 2))
+D = Particle(1, Vector(0, 0))
 
 
 class TestParticle:
@@ -32,8 +33,9 @@ class TestParticle:
         assert not A % B
 
     def test_two_body_force(self):
-        assert A.two_body_force(B) == Vector(0, G * 1/100)
-        assert B.two_body_force(A) == Vector(0, G * -1/100)
+        g = 1
+        assert A.two_body_force(B, g) == Vector(0, g * 1/100)
+        assert B.two_body_force(A, g) == Vector(0, g * -1/100)
 
     def test_two_body_amomentum(self):
         b = B
@@ -45,6 +47,7 @@ class TestParticle:
         """Proof test to check we can't simplify the calculation by
         measuring force from centre of mass rather than summing each
         individual particle."""
-        sum_f = A.two_body_force(B) + A.two_body_force(C)
-        com_f = A.two_body_force(B + C)
+        g = 1
+        sum_f = A.two_body_force(B, g) + A.two_body_force(C, g)
+        com_f = A.two_body_force(B + C, g)
         assert sum_f != com_f

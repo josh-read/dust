@@ -3,6 +3,12 @@ import pytest
 from dust.vector import Vector
 
 
+A = Vector(0, 0)
+B = Vector(5, 0)
+C = Vector(-3.14, 0)
+D = Vector(3, 4)
+
+
 class TestInit:
 
     def test_init_ints(self):
@@ -78,3 +84,16 @@ class TestDivide:
             Vector(2, -3.1) / (3 - 2j)
         with pytest.raises(TypeError):
             Vector(2, -3.1) / 'lel'
+
+
+def test_scalar_dist():
+    assert A.scalar_dist(B) == 5
+    assert A.scalar_dist(C) == 3.14
+    assert A.scalar_dist(D) == 5
+
+
+def test_unit_vector():
+    assert A.unit_vector() == Vector(0, 0)
+    assert B.unit_vector() == Vector(1, 0)
+    assert C.unit_vector() == Vector(-1, 0)
+    assert D.unit_vector() == Vector(3/5, 4/5)
