@@ -86,6 +86,20 @@ class Particle:
             f_net += self.two_body_force(particle, g)
         return f_net
 
+    @staticmethod
+    def quick_force(particles: list) -> list:
+        """Takes a list of particles and reutrns a list of vectors
+        representing the net force on each particle."""
+        n = len(particles)
+        forces = [Vector(0, 0) for _ in range(n)]
+        # when multithreading split on the first range of for loop
+        for i in range(0, n):
+            for j in range(i+1, n):
+                f = particles[i].two_body_force(particles[j], 0.1)
+                forces[i] += (f)
+                forces[j] += (-f)
+        return forces
+
     def two_body_amomentum(self, other) -> float:
         """L = r x p"""
         r = other.position - self.position
@@ -116,3 +130,9 @@ class Particle:
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position, rho=rho)
+
+
+if __name__ == '__main__':
+    particles = [Particle.random_static(0.1) for _ in range(5)]
+    print(particles)
+    Particle.quick_force(particles)
