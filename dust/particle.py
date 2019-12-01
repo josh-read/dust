@@ -50,8 +50,8 @@ class Particle:
 
     def __eq__(self, other):
         mass_equal = isclose(self.mass, other.mass)
-        position_equal = self.position == other.position
-        momentum_equal = self.momentum == other.momentum
+        position_equal = (self.position == other.position)
+        momentum_equal = (self.momentum == other.momentum)
         if mass_equal and position_equal and momentum_equal:
             return True
         else:
@@ -90,6 +90,7 @@ class Particle:
                / (abs(self.mass) + abs(other.mass))
 
     def two_body_force(self, other, g) -> Vector:
+        """Return gravitational force between two particles as a vector."""
         m1 = self.mass
         m2 = other.mass
         r1 = self.position
@@ -105,7 +106,7 @@ class Particle:
         """Calculate the net force on a single particle from a list of all
         other particles. When trying to find the net force for the whole
         list of particles it is approx 30-50% quicker to use quick_force
-        method than mapping this function to each particle in the list."""
+        than mapping this function to each particle in the list."""
         f_net = Vector(0, 0)
         for particle in particles:
             f_net += self.two_body_force(particle, g)
@@ -132,13 +133,17 @@ class Particle:
         p = other.momentum - self.momentum
         return Vector.cross(r, p)
 
-    def net_amomentum(self, dust: list) -> float:
+    def net_amomentum(self, particles: list) -> float:
+        """Returns the net angular momentum of the particle relative to
+        all other particles."""
         l_net = 0
-        for particle in dust:
+        for particle in particles:
             l_net += self.two_body_amomentum(particle)
         return l_net
 
     def check_collision(self, other) -> bool:
+        """Return True if collision between self and other, otherwise
+        return False."""
         critical_distance = self.radius + other.radius
         particle_seperation = self.position.scalar_dist(other.position)
         if particle_seperation <= critical_distance:
@@ -153,6 +158,8 @@ class Particle:
 
     @classmethod
     def random_static(cls, rho):
+        """Generate a Particle object with random mass and position with
+        no momentum."""
         mass = random.randint(1, 10)
         position = Vector(random.randint(0, 800), random.randint(0, 500))
         return cls(mass, position, rho=rho)
