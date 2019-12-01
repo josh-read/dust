@@ -1,5 +1,5 @@
-import random
 from math import isclose, pi, sqrt
+import random
 
 from dust.vector import Vector
 
@@ -8,26 +8,39 @@ class Particle:
 
     def __init__(self, mass, position, momentum=Vector(0, 0), rho=0.2):
         self._mass = mass
+        self._rho = rho
         self.position = position
         self.momentum = momentum
         self.velocity = momentum / mass
-        self.rho = rho
+
+    @property
+    def mass(self):
+        """Getter for mass property, implemented to enable use of mass
+        setter."""
+        return self._mass
+
+    @mass.setter
+    def mass(self, mass):
+        """Getter for mass property, recalculates particle radius upon
+        change"""
+        self._mass = mass
         try:
             self.radius = self.radius_from_mass()
         except ValueError:  # Raised when negative mass is used
             self.radius = 0
 
     @property
-    def mass(self):
-        return self._mass
+    def rho(self):
+        """Getter for density property, implemented to enable use of
+        density setter."""
+        return self._rho
 
-    @mass.setter
-    def mass(self, mass):
-        self._mass = mass
-        try:
-            self.radius = self.radius_from_mass()
-        except ValueError:  # Raised when negative mass is used
-            self.radius = 0
+    @rho.setter
+    def rho(self, rho):
+        """Getter for mass property, recalculates particle radius upon
+        change"""
+        self._rho = rho
+        self.radius = self.radius_from_mass()
 
     def __repr__(self):
         return (f"Particle("
@@ -36,14 +49,18 @@ class Particle:
                 f"Mom({self.momentum}))")
 
     def __eq__(self, other):
-        if (isclose(self.mass, other.mass) and self.position == other.position
-                and self.momentum == other.momentum):
+        mass_equal = isclose(self.mass, other.mass)
+        position_equal = self.position == other.position
+        momentum_equal = self.momentum == other.momentum
+        if mass_equal and position_equal and momentum_equal:
             return True
         else:
             return False
 
     def __add__(self, other):
-        if type(other) == int:
+        """Adding particles gives the resultant particle of a totally
+        inelastic collision."""
+        if type(other) == int:  # This allows sum() method to be used
             other = Particle(0, Vector(0, 0))
         mass = self.mass + other.mass
         position = self.centre_of_mass(other)
@@ -59,14 +76,18 @@ class Particle:
         return self + (- other)
 
     def __mod__(self, other) -> bool:
+        """Using modulus as an idiom for checking for collisions between
+        particles."""
         return self.check_collision(other)
 
     def radius_from_mass(self) -> float:
+        """Calculate the particle's radius from its mass and density."""
         return sqrt(self.mass/(pi * self.rho))
 
     def centre_of_mass(self, other) -> Vector:
+        """Calculate the centre of mass of two particles."""
         return (self.mass * self.position + other.mass * other.position) \
-                / (abs(self.mass) + abs(other.mass))
+               / (abs(self.mass) + abs(other.mass))
 
     def two_body_force(self, other, g) -> Vector:
         m1 = self.mass
@@ -80,9 +101,13 @@ class Particle:
         except ZeroDivisionError:
             return Vector(0, 0)
 
-    def net_force(self, dust: list, g: float) -> Vector:
+    def net_force(self, particles: list, g: float) -> Vector:
+        """Calculate the net force on a single particle from a list of all
+        other particles. When trying to find the net force for the whole
+        list of particles it is approx 30-50% quicker to use quick_force
+        method than mapping this function to each particle in the list."""
         f_net = Vector(0, 0)
-        for particle in dust:
+        for particle in particles:
             f_net += self.two_body_force(particle, g)
         return f_net
 
