@@ -9,6 +9,10 @@ class Particle:
     def __init__(self, mass, position, momentum=Vector(0, 0), rho=0.2):
         self._mass = mass
         self._rho = rho
+        try:
+            self.radius = self.radius_from_mass()
+        except ValueError:  # Raised when negative mass is used
+            self.radius = 0
         self.position = position
         self.momentum = momentum
         self.velocity = momentum / mass
@@ -151,10 +155,10 @@ class Particle:
         else:
             return False
 
-    def update(self, dust: list, dt: float, g: float):
-        self.momentum += dt * self.net_force(dust, g)
+    def update(self, dust: list, g: float):
+        self.momentum += self.net_force(dust, g)
         self.velocity = self.momentum / self.mass
-        self.position += dt * self.velocity
+        self.position += self.velocity
 
     @classmethod
     def random_static(cls, rho):

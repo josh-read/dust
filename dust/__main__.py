@@ -42,13 +42,6 @@ def get_parser():
             help="total angular momentum of the system",
             )
     parser.add_argument(
-            '-dt',
-            '--time-step',
-            type=float,
-            default=1,
-            help="time step through simulation",
-            )
-    parser.add_argument(
             '-g',
             '--gravity',
             type=float,

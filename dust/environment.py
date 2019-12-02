@@ -7,7 +7,6 @@ class Environment:
     def __init__(self, particles: list, **kwargs):
         """Initialise environment with a list of particles."""
         self.particles = particles
-        self.dt = kwargs.get('time_step', 1)
         self.g = kwargs.get('gravity', 0.1)
 
     def collisions(self):
@@ -29,7 +28,7 @@ class Environment:
     def move(self):
         """Update system of particles to new position after timestep."""
         for particle in self.particles:
-            particle.update(self.particles, self.dt, self.g)
+            particle.update(self.particles, self.g)
 
     def step(self):
         self.move()
