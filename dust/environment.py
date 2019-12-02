@@ -27,8 +27,9 @@ class Environment:
 
     def move(self):
         """Update system of particles to new position after timestep."""
-        for particle in self.particles:
-            particle.update(self.particles, self.g)
+        forces = Particle.quick_force(self.particles)
+        for p, f in zip(self.particles, forces):
+            p.update(f)
 
     def step(self):
         self.move()

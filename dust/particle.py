@@ -13,6 +13,10 @@ class Particle:
             self.radius = self.radius_from_mass()
         except ValueError:  # Raised when negative mass is used
             self.radius = 0
+        try:
+            self.radius = self.radius_from_mass()
+        except ValueError:  # Raised when negative mass is used
+            self.radius = 0
         self.position = position
         self.momentum = momentum
         self.velocity = momentum / mass
@@ -155,8 +159,12 @@ class Particle:
         else:
             return False
 
-    def update(self, dust: list, g: float):
-        self.momentum += self.net_force(dust, g)
+    def update(self, force):
+        """Update Particle dynamics using a timestep of 1.
+
+        Should you wish to slow the movement lower the gravitational
+        constant g for the same effect as lowering the timestep."""
+        self.momentum += force
         self.velocity = self.momentum / self.mass
         self.position += self.velocity
 
