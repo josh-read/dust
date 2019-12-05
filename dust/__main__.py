@@ -1,26 +1,7 @@
 import argparse
-import contextlib
 
 from environment import Environment
-with contextlib.redirect_stdout(None):
-    from graphics import Graphics
-
-
-def runner(env: Environment, f=50):
-    """Opens a pygame window and runs simulation forever.
-
-    Pygame window is initialised and updated once every 'f' iterations
-    that the simulation runs. Simulation can be closed with ESC key or
-    by clicking on the window close button."""
-
-    g = Graphics()
-    i = 0
-    while True:
-        i += 1
-        env.step()
-        if i % f == 0:
-            i = 0
-            g.update(env.particles)
+from runner import runner
 
 
 def get_parser():

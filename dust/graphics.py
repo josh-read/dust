@@ -1,11 +1,14 @@
+import contextlib
+import math
 import os
 import sys
-import math
 
-import pygame
+with contextlib.redirect_stdout(None):
+    import pygame
 
 from particle import Particle
 from vector import Vector
+
 
 class Graphics:
 
