@@ -1,7 +1,7 @@
 from math import isclose, pi, sqrt
 import random
 
-from dust.vector import Vector
+from vector import Vector
 
 
 class Particle:
