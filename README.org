@@ -1,0 +1,9 @@
+* Dust
+
+*Yet another gravity sim.*
+
+This is another implementation of the very popular excercise among Python beginners.
+
+I aimed for writing readable, well structured, idiomatic Python. My code therefore makes heavy use of OOP and uses only pure Python.
+
+The graphics rely on Pygame and were implemented by [[https://github.com/mastamysta][mastamysta]], who is responsible for all UI features such as panning, zooming and tracking the particle COM.
